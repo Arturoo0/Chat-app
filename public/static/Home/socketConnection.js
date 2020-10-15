@@ -28,6 +28,15 @@ const getRooms = async () => {
   }
 };
 
+const checkIfRoomExists = async (roomName) => {
+  const rooms = await getRooms();
+  return (roomName in rooms) ? true : false;
+}
+
+const raiseRoomExistsError = () => {
+  alert('That room is already created.');
+}
+
 const createRoom = async (_roomName, _userName) => {
   const roomName = _roomName;
   const userName = _userName;
@@ -45,8 +54,12 @@ const routeToRoom = (roomName) => {
 
 fillRooms();
 const button = document.getElementById('create-btn');
-button.addEventListener('click', () => {
+button.addEventListener('click', async () => {
   const data = getFormData();
-  createRoom(data['roomName'], data['userName']);
-  routeToRoom(data['roomName']);
+  if (await checkIfRoomExists(data['roomName'])){
+    raiseRoomExistsError();
+  }else{
+    createRoom(data['roomName'], data['userName']);
+    routeToRoom(data['roomName']);
+  }
 }, false);
