@@ -28,10 +28,18 @@ const getRooms = async () => {
   }
 };
 
-const createRoom = async () => {
-  const data = getFormData();
-  const roomName = data['roomName'];
-  const userName = data['userName'];
+const checkIfRoomExists = async (roomName) => {
+  const rooms = await getRooms();
+  return (roomName in rooms) ? true : false;
+}
+
+const raiseRoomExistsError = () => {
+  alert('That room is already created.');
+}
+
+const createRoom = async (_roomName, _userName) => {
+  const roomName = _roomName;
+  const userName = _userName;
   await fetch(`http://localhost:3000/create-room?roomName=${roomName}&userName=${userName}`, {
     method: 'POST',
     headers: {
@@ -40,9 +48,18 @@ const createRoom = async () => {
   })
 }
 
+const routeToRoom = (roomName) => {
+  window.location.href = `http://localhost:3000/static/Chat/index.html?roomName=${roomName}`
+}
+
 fillRooms();
 const button = document.getElementById('create-btn');
-button.addEventListener('click', () => {
-  createRoom();
-  fillRooms();
+button.addEventListener('click', async () => {
+  const data = getFormData();
+  if (await checkIfRoomExists(data['roomName'])){
+    raiseRoomExistsError();
+  }else{
+    createRoom(data['roomName'], data['userName']);
+    routeToRoom(data['roomName']);
+  }
 }, false);
