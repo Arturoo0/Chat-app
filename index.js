@@ -7,6 +7,13 @@ var io = require('socket.io')(http);
 app.use(express.static('public'));
 let rooms = {};
 
+io.on('connect', (socket) => {
+  socket.on('chat message', (msg) => {
+    console.log(socket);
+    socket.broadcast.emit('chat message', msg);
+  });
+});
+
 app.get('/', (req, res) => {
   res.sendFile('static/Chat/index.html');
 });
@@ -20,13 +27,6 @@ app.post('/create-room', (req, res) => {
   rooms[formData.roomName] = {
     currentMembers : 0
   }
-});
-
-io.on('connect', (socket) => {
-  socket.on('chat message', (msg) => {
-    console.log(socket);
-    socket.broadcast.emit('chat message', msg);
-  });
 });
 
 http.listen(3000, () => {
