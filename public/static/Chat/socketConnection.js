@@ -1,4 +1,12 @@
+
+const getURLRoomName = () => {
+  const url = new URL(window.location.href);
+  return url.searchParams.get('roomName')
+}
+
 const socket = io();
+socket.emit('join', getURLRoomName());
+
 const addMsg = (msg, elementClass, spanClass) => {
   const msgList = document.getElementById('messages');
   const newLi = document.createElement('li');
@@ -17,7 +25,7 @@ button.addEventListener('click', () => {
   event.preventDefault();
   const form = document.getElementById('m').value;
   addMsg(form, 'right-msg', 'right-msg-div');
-  socket.emit('chat message', form);
+  socket.emit('chat message', form, getURLRoomName());
 }, false);
 
 socket.on('chat message', (msg) => {
