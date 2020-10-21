@@ -13,7 +13,7 @@ const fillRooms = async () => {
   if (rooms.length === 0) return;
   for (const roomName in rooms){
     const newLi = document.createElement('li');
-    newLi.innerHTML = roomName;
+    newLi.innerHTML = `<a href='http://localhost:3000/static/Chat/index.html?roomName=${roomName}'>roomName</a>`;
     roomUL.append(newLi);
   }
 };

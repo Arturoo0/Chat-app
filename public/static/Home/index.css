@@ -24,7 +24,19 @@ body {
   width: 400px;
 }
 
+#join-rooms li {
+  text-align: center;
+  list-style-type: none;
+  padding: 10px 10px;
+}
+
+#join-rooms li:hover {
+  opacity: .7;
+  cursor: pointer;
+}
+
 #join-rooms {
+  border-radius: 3px;
   margin: 20px auto;
   background-color: white;
   width: 400px;
