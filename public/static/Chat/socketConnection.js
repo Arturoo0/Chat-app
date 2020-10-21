@@ -4,7 +4,13 @@ const getURLRoomName = () => {
   return url.searchParams.get('roomName')
 }
 
+const setRoomName = () => {
+  const header = document.getElementById('room-name');
+  header.textContent = getURLRoomName();
+}
+
 const socket = io();
+setRoomName();
 socket.emit('join', getURLRoomName());
 
 const addMsg = (msg, elementClass, spanClass) => {
